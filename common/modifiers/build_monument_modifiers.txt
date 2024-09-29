@@ -1,0 +1,19 @@
+build_monument_inspiring_speech_modifier = {
+	icon = county_modifier_opinion_positive
+	county_opinion_add = 10
+}
+
+build_monument_terrible_speech_modifier = {
+	icon = county_modifier_opinion_negative
+	county_opinion_add = -10
+}
+
+build_monument_terrible_rejected_generous_merchant_offer_modifier = {
+	icon = county_modifier_opinion_negative
+	county_opinion_add = -10
+}
+
+build_monument_inspiring_gifted_excess_materials = {
+	icon = county_modifier_development_positive
+	development_growth_factor = 0.5
+}

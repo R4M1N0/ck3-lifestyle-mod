@@ -1,0 +1,15 @@
+
+##TODO: Populate
+build_monument_survey_selection = {
+	
+	random_events = {
+		100 = build_monument.1100 
+		100 = build_monument.1110 
+		100 = build_monument.1200 
+	}
+}
+
+##TODO: Populate
+build_monument_build_selection = {
+
+}

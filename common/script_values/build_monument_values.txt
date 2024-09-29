@@ -1,0 +1,185 @@
+##### VARIABLES #####
+build_monument_normal_option_cost = {
+	value = 10
+	multiply = activity_cost_scale_by_tier
+	multiply = activity_cost_scale_by_era
+}
+
+build_monument_good_option_cost = {
+	value = 10
+	multiply = activity_cost_scale_by_tier
+	multiply = activity_cost_scale_by_era
+}
+
+build_monument_success_chance_value = {
+	activity_host = {
+		### HOST
+		# SKILLS
+		add = {
+			value = learning
+			divide = 4
+			ceiling = yes
+			max = 10
+			desc = learning_modifier
+		}
+		add = {
+			value = stewardship
+			divide = 2
+			ceiling = yes
+			max = 10
+			desc = stewardship_modifier
+		}
+		# TRAIT
+		add = {
+			value = 0
+			# ARCHITECT
+			if = {
+				limit = {
+					has_trait = architect
+				}
+				add = 10
+			}
+			desc = build_monument_success_chance.trait
+		}
+		# SENESCHAL
+		if = {
+			limit = {
+				exists = court_position:seneschal_court_position
+			}
+			add = {
+				value = 0
+				court_position:seneschal_court_position = {
+					if = {
+						limit = {
+							aptitude = {
+								court_position = seneschal_court_position
+								value <= 1
+							}
+						}
+						add = 3
+					}
+					else_if = {
+						limit = {
+							aptitude = {
+								court_position = seneschal_court_position
+								value = 2
+							}
+						}
+						add = 6
+					}
+					else_if = {
+						limit = {
+							aptitude = {
+								court_position = seneschal_court_position
+								value = 3
+							}
+						}
+						add = 9
+					}
+					else_if = {
+						limit = {
+							aptitude = {
+								court_position = seneschal_court_position
+								value = 4
+							}
+						}
+						add = 12
+					}
+					else = {
+						add = 15
+					}
+				}
+				desc = build_monument_success_chance.seneschal
+			}
+		}
+	}
+	# GUESTS
+	if = {
+		# Builder Guest
+		limit = {
+			scope:activity.special_guest:build_monument_builder = {
+				is_alive = yes
+				is_participant_in_activity = scope:activity
+			}
+		}
+		add = {
+			value = 0
+			scope:activity.special_guest:build_monument_builder = {
+				value = stewardship
+				divide = 2
+				ceiling = yes
+				max = 10
+				desc = stewardship_modifier
+			}
+		}
+		add = {
+			value = 0
+			# ARCHITECT
+			scope:activity.special_guest:build_monument_builder = {
+				if = {
+					limit = {
+						has_trait = architect
+					}
+					add = 10
+				}
+			}
+			desc = build_monument_success_chance.trait
+		}
+	}
+	#OPTION
+	if = {
+		limit = {
+			has_activity_option = {
+				category = build_monument_option_material_quality
+				option = build_monument_option_material_quality_normal
+			}
+		}
+		add = {
+			value = 5
+			desc = build_monument_success_chance.build_monument_option_material_quality
+		}
+	}
+	else_if = {
+		limit = {
+			has_activity_option = {
+				category = build_monument_option_material_quality
+				option = build_monument_option_material_quality_good
+			}
+		}
+		add = {
+			value = 10
+			desc = build_monument_success_chance.build_monument_option_material_quality
+		}
+	}
+	if = {
+		limit = {
+			var:build_monument_success ?= flag:no
+		}
+		multiply = 0
+	}
+	min = 10
+	max = 100
+}
+
+
+build_monument_success_increase_minor_value = 3
+build_monument_success_increase_medium_value = 5
+build_monument_success_increase_major_value = 10
+build_monument_success_increase_massive_value = 15 # use very sparingly, this is huge
+
+build_monument_succes_decrease_minor_value = {
+	value = build_monument_success_increase_minor_value
+	multiply = -1
+}
+build_monument_succes_decrease_medium_value = {
+	value = build_monument_success_increase_medium_value
+	multiply = -1
+}
+build_monument_succes_decrease_major_value = {
+	value = build_monument_success_increase_major_value
+	multiply = -1
+}
+build_monument_succes_decrease_massive_value = {
+	value = build_monument_success_increase_massive_value
+	multiply = -1
+}

@@ -1,0 +1,122 @@
+﻿l_english:
+
+
+#### COMMON
+activity_build_monument: "Build Monument"
+TRAVEL_NAME_FOR_activity_build_monument: "Build Monument"
+activity_build_monument_desc: "Build a monument to imspire your legend!"
+activity_build_monument_destination_selection: "Select county"
+activity_build_monument_host_desc: "Host"
+activity_build_monument_name: "Build Monument"
+activity_build_monument_owner: "Build a monument will have you upgrade your prestige"
+activity_build_monument_guest_desc: "Builder Entourage"
+activity_build_monument_guest_help_text: "It is more favourable to invite characters with high Stewardship"
+
+#### VAR
+
+build_monument_success_increase_minor_tt:0 "Success change increases slightly!"
+build_monument_success_increase_medium_tt:0 "Success change increases!"
+build_monument_success_increase_major_tt:0 "Success change increases greatly!"
+build_monument_success_increase_massive_tt:0 "Success change increases tremendously!"
+
+
+build_monument_success_decrease_minor_tt:0 "Success change decreases slightly!"
+build_monument_success_decrease_medium_tt:0 "Success change decreases!"
+build_monument_success_decrease_major_tt:0 "Success change decreases greatly!"
+build_monument_success_decrease_massive_tt:0 "Success change decreases tremendously!"
+
+#### SPECIAL GUEST
+build_monument_builder_desc: "The primary build master that will be responsible for your monument"
+build_monument_builder_desc_for_host: "The primary build master that will be responsible for your monument"
+build_monument_builder_for_host: "Master Builder"
+#### OPTIONS
+build_monument_builder: "Builder"
+build_monument_type_prestige: "Monument of Glory"
+build_monument_option_material_quality: "Quality of Materials"
+build_monument_option_material_quality_bad: "Use local materials"
+build_monument_option_material_quality_bad_desc: "We will just see what is available when we arrive"
+build_monument_option_material_quality_normal: "Order materials from Capital"
+build_monument_option_material_quality_normal_desc: "Ask the quarry master that repairs your castle"
+build_monument_option_material_quality_good: "Send for the best materials of the realm"
+build_monument_option_material_quality_good_desc: "Your courtiers will seek out a renowed supplier of architectural projects"
+#### PHASES
+build_monument_survey: "Survey Province"
+build_monument_survey_desc: "You and your party look for an appropriate space to build your monument"
+build_monument_build: "Building Monument"
+build_monument_build_desc: "You are literally building up your legend"
+build_monument_finish: "Presenting Monument"
+build_monument_finish_desc: "It is time to boast your monument"
+#### ACTIVITY LOG
+build_monument_start_log_title: "You start your endeavour of building your legend"
+build_monument_city_center_survey_success_title: "You found a good spot in the city center"
+build_monument_city_center_survey_failure_title: "Local burghers own city center spot"
+build_monument_city_center_survey_buyout_title: "City center spot has been bought"
+
+build_monument_city_center_survey_wayshrine_city_support_log_title: "You decided to build the wayshrine monument closer to a city"
+build_monument_city_center_survey_wayshrine_church_support_log_title: "You decided to build the wayshrine monument closer to a church"
+
+#### PULSE ACTIONS
+build_monument_inspiring_speech_title: "You give an inspiring speech to the peasant workers"
+build_monument_terrible_speech_title: "You give a terrible speech to the peasant workers"
+build_monument_excess_materials_gifted_title: "You gift a few of the excess materials to the local populace"
+
+
+#### MODIFIERS
+build_monument_inspiring_speech_modifier: "You held an inspiring speech for the workers"
+build_monument_terrible_speech_modifier: "You held a terrible speech for the workers"
+build_monument_inspiring_gifted_excess_materials: "You gifted excess materials to the peasants, helping them build sturdy buildings"
+build_monument_terrible_rejected_generous_merchant_offer_modifier: "Generous local merchant offer rejected"
+
+
+#### EVENTS
+build_monument.1000.t: "Surveying the land"
+build_monument.1000.desc: "We arrived in [activity.GetCurrentPhase.GetLocation.GetBaronyNameExplicitly] to build a monument commerorating my character and saga. I will have to decide on the best spot on where to build my grand monument"
+build_monument.1000.a: "In the city nearby, a lot of people will see it."
+build_monument.1000.a.t: "The city will provide you with good craftsmen and materials, but not everyone may take your endeavour to liking"
+build_monument.1000.b: "Near a wayshrine, to build infrastructure for the servants of [ROOT.Char.GetFaith.HighGodNameAlternate]"
+build_monument.1000.b.t: "Not a whole lot of readily available help, but everyone will appreciate it"
+build_monument.1000.c: "By the military grounds, inspiring my soldiers and vassals"
+build_monument.1000.c.t: "Your soldiers will like the inspiration, but may be annoyed pulling another build shift after patrol"
+
+build_monument.1100.t: "Surveying the City Center"
+build_monument.1100.desc: "It has come to my attention, that there is a spot in the city center that just seems perfect. I am not quite sure about whether this space will fit my needs. Someone will need to assess the grounds."
+build_monument.1100.a: "You survey the city center yourself"
+build_monument.1100.a.t: "You might not correctly assess the situation..."
+build_monument.1100.a.success.tt: "You find just the spot you need"
+build_monument.1100.b.success.tt: "You think it fits, but it may actually become terrible down the line"
+build_monument.1100.b: "That is exactly why I brough my Master Builder"
+build_monument.1100.b.t: "He will assess the situation"
+build_monument.1100.b.success.tt: "You find just the spot you need"
+build_monument.1100.b.success.tt: "You think it fits, but it may actually become terrible down the line"
+
+build_monument.1101.t: "A good place found"
+build_monument.1101.desc: "Nobody seems to have a claim on this property. In fact, several burghers acknowledged that this spot has been unused for several decades and the surrounding areas are decrepit because the old owner has left for better fortunes."
+build_monument.1101.a: "It is perfect."
+
+build_monument.1102.t: "Clash with local Burghers"
+build_monument.1102.desc: "Severals burghers and merchants are putting their eyes upon me as I survey the perfectly empty spot. After the amount on onlookers has become unignorable I approached them and stated my intentions. They gave to attention that the local merchants started planning a development project to entice more foreign merchants into the city, right on this empty lot"
+build_monument.1102.a: "Then I will have to look elsewhere."
+build_monument.1102.a: "I will buy it fair and square"
+
+build_monument.1110.t: "Local merchant offers land for build project"
+build_monument.1110.desc: "A local merchant has come forward to me praising my rule. He expressed his intent to partake in my endeavour. 'My liege, I own a considerable amount of land in [activity.GetCurrentPhase.GetLocation.GetBaronyNameExplicitly]. I would be honored to gift you a considerable plot of land to use for building or storing materials.'"
+build_monument.1110.a: "You graciously accept."
+build_monument.1110.b: "You insist on paying for his land."
+build_monument.1110.c: "We will make do without your land."
+
+
+
+
+build_monument.1200.t: "Picking a good spot in the countryside"
+build_monument.1200.desc: "We have found a flat and relatively busy crossing between the nearby city and the nearby church. While the idea was to build a wayshrine monument a bit more out in the country-side, a few merchants from the edge of the city have come forward to me to offer support to my endeavour. 'My liege, such a grand monument depicting your grandeur so close to the city would cerntainly drive a lot of visitors to us.' The local bishop would be certainly disappointed if I were to divert now."
+build_monument.1200.a: "The coin would do me better now."
+build_monument.1200.b: "No, I am a good [ROOT.Char.GetFaith.GetAdherentName]"
+
+
+build_monument.2000.t: "It is time to build"
+build_monument.2000.desc: "All the necessary preparations have been made in [activity.GetCurrentPhase.GetLocation.GetBaronyNameExplicitly]. The materials have arrived, the locals have been paid and my entourage and me are eager start overseeing the works."
+build_monument.2000.a: "It is time to place the foundation of my legend."
+
+build_monument.5003.t: "Building comes to an end"
+build_monument.5003.desc: "During our toils of grandeur, [host.Custom2('MyCharacterIntroduction', ROOT.Char)] came into passing.\n [host.GetSheHe] left behind half a built monument. A permanent testament that no matter our goals, life can just cut and end to it all."
+build_monument.5003.a: "I hope he will not haunt this place."

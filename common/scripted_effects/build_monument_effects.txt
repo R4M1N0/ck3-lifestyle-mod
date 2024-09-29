@@ -1,0 +1,9 @@
+build_monument_success_change_effect = {
+	scope:activity = {
+		change_variable = {
+			name = build_monument_success_chance
+			add = build_monument_success_$CHANGE$_value
+		}
+	}
+	custom_tooltip = build_monument_success_$CHANGE$_tt
+}

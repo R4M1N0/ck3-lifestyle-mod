@@ -1,0 +1,4 @@
+diplomacy_adventurer_increase_vassal_opinion_opinion = {
+	monthly_change = 0.5
+	decaying = yes
+}

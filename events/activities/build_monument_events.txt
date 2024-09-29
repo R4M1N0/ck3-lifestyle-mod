@@ -1,0 +1,584 @@
+namespace = build_monument
+####################################
+# VAR HEADER
+####################################
+#
+#build_monument_survey_city_selected
+#build_monument_survey_wayshrine_selected
+#build_monument_survey_barracks_selected
+#
+#
+#
+#
+#
+#
+#
+####################################
+# BUILD MONUMENT SURVEY EVENTS
+# 1000-1999
+####################################
+#Event for selection where to build monument
+build_monument.1000 = {
+	type = activity_event
+	title = build_monument.1000.t
+	desc = build_monument.1000.desc
+	theme = diplomacy_majesty_focus
+	override_background = {
+		reference = wilderness_scope
+	}
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:activity.special_guest:build_monument_builder
+		animation = personality_bold
+	}
+	#City
+	option = {
+		name = build_monument.1000.a
+		custom_tooltip = build_monument.1000.a.t
+		scope:activity = {
+			set_variable = {
+				name = build_monument_survey_city_selected
+				value = yes
+			}
+		}
+		build_monument_success_change_effect = {
+			CHANGE = increase_medium
+		}
+		stress_impact = {
+			shy = minor_stress_impact_gain
+			reclusive = medium_stress_impact_gain
+			gregarius = minor_stress_impact_loss
+		}
+	}
+	#Wayshrine
+	option = {
+		name = build_monument.1000.b
+		custom_tooltip = build_monument.1000.b.t
+		scope:activity = {
+			set_variable = {
+				name = build_monument_survey_wayshrine_selected
+				value = yes
+			}
+		}
+		stress_impact = {
+			cynical = minor_stress_impact_gain
+			sadistic = medium_stress_impact_gain
+			zealous = medium_stress_impact_loss
+		}
+	}
+	#Barracks
+	option = {
+		name = build_monument.1000.c
+		custom_tooltip = build_monument.1000.c.t
+		build_monument_success_change_effect = {
+			CHANGE = increase_medium
+		}
+		scope:activity = {
+			set_variable = {
+				name = build_monument_survey_barracks_selected
+				value = yes
+			}
+		}
+	}
+}
+
+## Survey City
+# City Center has space for a monument
+build_monument.1100 = {
+	type = activity_event
+	title = build_monument.1100.t
+	desc = build_monument.1100.desc
+	theme = diplomacy_majesty_focus
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:activity.special_guest:build_monument_builder
+		animation = personality_bold
+	}
+	trigger = {
+		#Must have city selected
+		scope:activity = {
+			has_current_phase = build_monument_survey
+			has_variable = build_monument_survey_city_selected
+			NOT = {
+				has_variable = build_monument_survey_city_center_surveyed
+			}
+		}
+		scope:host = root
+	}
+	#Character decides it looks fine
+	option = {
+		name = build_monument.1100.a
+		custom_tooltip = build_monument.1100.a.t
+		scope:activity = {
+			set_variable = {
+				name = build_monument_survey_city_center_surveyed
+				value = yes
+			}
+		}
+		duel = {
+			skill = stewardship
+			value = 10
+			target = scope:host
+			# Success
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = build_monument.1100.a.success.tt
+				scope:activity = {
+					add_activity_log_entry = {
+						key = build_monument_city_center_survey_success
+						character = root
+						build_monument_success_change_effect = {
+							CHANGE = increase_medium
+						}
+						root = {
+							add_diplomacy_lifestyle_xp = medium_lifestyle_experience
+						}
+					}
+				}
+				trigger_event = build_monument.1101
+			}
+			# Failure
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = build_monument.1100.a.failure.tt
+				scope:activity = {
+					add_activity_log_entry = {
+						key = build_monument_city_center_survey_failure
+						character = root
+						build_monument_success_change_effect = {
+							CHANGE = decrease_medium
+						}
+					}
+				}
+				trigger_event = build_monument.1102
+			}
+		}
+	}
+	#Let Builder decide whether it looks fine
+	option = {
+		name = build_monument.1100.b
+		custom_tooltip = build_monument.1100.b.t
+		scope:activity = {
+			set_variable = {
+				name = build_monument_survey_city_center_surveyed
+				value = yes
+			}
+		}
+		trigger = {
+			exists = scope:activity.special_guest:build_monument_builder
+		}
+		scope:activity.special_guest:build_monument_builder = {
+			duel = {
+				skill = stewardship
+				value = 10
+				# Success
+				50 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = 3.5
+						min = -49
+					}
+					desc = build_monument.1100.a.success.
+					scope:activity = {
+						add_activity_log_entry = {
+							key = build_monument_city_center_survey_success
+							character = root
+							build_monument_success_change_effect = {
+								CHANGE = increase_medium
+							}
+							scope:activity.special_guest:build_monument_builder = {
+								add_diplomacy_lifestyle_xp = medium_lifestyle_experience
+							}
+						}
+					}
+					trigger_event = build_monument.1101
+				}
+				# Failure
+				50 = {
+					compare_modifier = {
+						value = scope:duel_value
+						multiplier = -3.5
+						min = -49
+					}
+					desc = build_monument.1100.a.failure.tt
+					scope:activity = {
+						add_activity_log_entry = {
+							key = build_monument_city_center_survey_failure
+							character = root
+							build_monument_success_change_effect = {
+								CHANGE = decrease_medium
+							}
+						}
+					}
+					trigger_event = build_monument.1102
+				}
+			}
+		}
+	}
+}
+
+# City Center Success
+build_monument.1101 = {
+	type = activity_event
+	title = build_monument.1101.t
+	desc = build_monument.1101.desc
+	theme = diplomacy_majesty_focus
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:activity.special_guest:build_monument_builder
+		animation = personality_bold
+	}
+	#Acknowledge
+	option = {
+		name = build_monument.1101.a
+	}
+}
+
+# City Center Failure
+build_monument.1102 = {
+	type = activity_event
+	title = build_monument.1102.t
+	desc = build_monument.1102.desc
+	theme = diplomacy_majesty_focus
+	left_portrait = {
+		character = root
+		animation = fear
+	}
+	right_portrait = {
+		character = scope:activity.special_guest:build_monument_builder
+		animation = fear
+	}
+	#Acknowledge
+	option = {
+		name = build_monument.1102.a
+	}
+	#Fix with Money
+	option = {
+		name = build_monument.1102.b
+		scope:activity = {
+			add_activity_log_entry = {
+				key = build_monument_city_center_survey_buyout
+				character = root
+				build_monument_success_change_effect = {
+					CHANGE = increase_medium
+				}
+				root = {
+					remove_short_term_gold = medium_gold_value
+				}
+				if = {
+					limit = {
+						NOT = {
+							root = scope:host
+						}
+					}
+					scope:host = {
+						add_opinion = {
+							modifier = impressed_opinion
+							target = root
+							opinion = 20
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+# Local tradesman offer land
+
+build_monument.1110 = {
+	type = activity_event
+	title = build_monument.1110.t
+	desc = build_monument.1110.desc
+	theme = diplomacy_majesty_focus
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:good_merchant_scope
+		animation = personality_bold
+	}
+	trigger = {
+		#Must have city selected
+		scope:activity = {
+			has_current_phase = build_monument_survey
+			has_variable = build_monument_survey_city_selected
+		}
+		scope:host = root
+	}
+
+
+	immediate = {
+		create_character = {
+			template = good_merchant_template
+			location = root.location
+			culture = root.location.county.culture # They should look like a local
+			faith = root.faith
+			dynasty = none
+			#Set up the scope
+			save_scope_as = good_merchant_scope
+		}
+	}
+
+	
+	after = {
+		scope:good_merchant_scope = {
+			if = {
+				limit = {
+					root = { is_ai = yes }
+				}
+				silent_disappearance_effect = yes
+			}
+		}
+	}
+
+	#You take his free offer
+	option = {
+		name = build_monument.1110.a
+ 
+		scope:activity = {
+			add_activity_log_entry = {
+				key = build_monument_city_center_survey_wayshrine_city_support_log
+				character = root
+				build_monument_success_change_effect = {
+					CHANGE = increase_medium
+				}
+
+				scope:host = {
+					add_prestige = medium_prestige_loss
+				}
+			}
+		}
+	}
+
+	#You insist on paying
+	option = {
+		name = build_monument.1110.b
+
+		scope:activity = {
+			add_activity_log_entry = {
+				key = build_monument_city_center_survey_wayshrine_city_support_log
+				character = root
+				build_monument_success_change_effect = {
+					CHANGE = increase_medium
+				}
+
+				scope:host = {
+					add_prestige = medium_prestige_gain
+					remove_short_term_gold = medium_gold_value
+				}
+				
+			}
+		}
+	}
+
+	#You reject his offer
+	option = {
+		name = build_monument.1110.c
+
+		scope:activity = {
+			add_activity_log_entry = {
+				key = build_monument_city_center_survey_wayshrine_city_support_log
+				character = root
+				build_monument_success_change_effect = {
+					CHANGE = decrease_minor
+				}
+
+				#Irritated merchants
+				scope:province.county = {
+					add_county_modifier = {
+						modifier = build_monument_terrible_rejected_generous_merchant_offer_modifier
+						years = 5
+					}
+				}
+			}
+		}
+	}
+}
+
+
+# Local tradesmen resist
+# Local city has inadequate infrastructure
+# Local city has adequate infrastructure
+## Survey Wayshrine
+# Where to place wayshrine
+build_monument.1200 = {
+	type = activity_event
+	title = build_monument.1200.t
+	desc = build_monument.1200.desc
+	theme = diplomacy_majesty_focus
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:activity.special_guest:build_monument_builder
+		animation = personality_bold
+	}
+	trigger = {
+		#Must have wayshrine selected
+		scope:activity = {
+			has_current_phase = build_monument_survey
+			has_variable = build_monument_survey_wayshrine_selected
+			NOT = {
+				has_variable = build_monument_survey_wayshrine_surveyed
+			}
+		}
+		scope:host = root
+	}
+	#Opt1
+	#More near city (+ Gold, -Piety)
+	option = {
+		name = build_monument.1200.a
+		custom_tooltip = build_monument.1200.a.t
+		scope:activity = {
+			set_variable = {
+				name = build_monument_survey_wayshrine_surveyed
+				value = yes
+			}
+			set_variable = {
+				name = build_monument_survey_wayshrine_surveyed_city_support
+				value = yes
+			}
+		}
+		scope:activity = {
+			add_activity_log_entry = {
+				key = build_monument_city_center_survey_wayshrine_city_support_log
+				character = root
+				build_monument_success_change_effect = {
+					CHANGE = increase_medium
+				}
+				add_short_term_gold = medium_gold_value
+				add_piety = medium_piety_loss
+			}
+		}
+	}
+	#Opt2 (-Piety, + Gold)
+	option = {
+		name = build_monument.1200.b
+		custom_tooltip = build_monument.1200.b.t
+		scope:activity = {
+			set_variable = {
+				name = build_monument_survey_wayshrine_surveyed
+				value = yes
+			}
+			set_variable = {
+				name = build_monument_survey_wayshrine_surveyed_church_support
+				value = yes
+			}
+		}
+		scope:activity = {
+			add_activity_log_entry = {
+				key = build_monument_city_center_survey_wayshrine_church_support_log
+				character = root
+				build_monument_success_change_effect = {
+					CHANGE = increase_medium
+				}
+				remove_short_term_gold = medium_gold_value
+				add_piety = medium_piety_gain
+			}
+		}
+	}
+}
+
+## Survey Barracks
+####################################
+# BUILD MONUMENT SURVEY EVENTS
+# 2000-2999
+####################################
+build_monument.2000 = {
+	type = activity_event
+	title = build_monument.2000.t
+	desc = build_monument.2000.desc
+	theme = diplomacy_majesty_focus
+	override_background = {
+		reference = wilderness_scope
+	}
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:activity.special_guest:build_monument_builder
+		animation = personality_bold
+	}
+	#Acknowledge
+	option = {
+		name = build_monument.2000.a
+	}
+}
+
+####################################
+# BUILD MONUMENT INTERRUPTION NOTIFICATIONS
+# 5000-5999
+####################################
+#The host has died during the build monument acitivity - event for guests
+build_monument.5003 = {
+	type = character_event
+	title = build_monument.5003.t
+	desc = build_monument.5003.desc
+	theme = diplomacy_majesty_focus
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_illness.dds"
+	}
+	left_portrait = {
+		character = scope:host
+	}
+	option = {
+		name = build_monument.5003.a
+	}
+}
+
+#The host was imprisoned during the build monument acitivity - event for host
+build_monument.5012 = {
+	type = character_event
+	title = build_monument.5012.t
+	desc = build_monument.5012.desc
+	theme = diplomacy_majesty_focus
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_prison.dds"
+	}
+	left_portrait = {
+		character = scope:host
+		animation = prison_dungeon
+	}
+	option = {
+		name = build_monument.5012.a
+	}
+}
+
+#The host was imprisoned during the build monument acitivity - event for guests
+build_monument.5013 = {
+	type = character_event
+	title = build_monument.5013.t
+	desc = build_monument.5013.desc
+	theme = diplomacy_majesty_focus
+	override_icon = {
+		reference = "gfx/interface/icons/event_types/type_prison.dds"
+	}
+	left_portrait = {
+		character = scope:host
+		animation = prison_dungeon
+	}
+	option = {
+		name = build_monument.5013.a
+	}
+}

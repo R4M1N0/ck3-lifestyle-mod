@@ -1,0 +1,218 @@
+# Held inspiring speech for Workers
+
+build_monument_inspiring_speech = {
+	icon = public
+
+	is_valid = {
+		is_current_phase_active = yes
+		has_activity_type = activity_build_monument
+		##TODO: Add checks whether popular opinion was not already applied
+	}
+
+	weight = {
+		value = 1
+		scope:host = {
+			add = {
+				value = diplomacy
+				divide = 10
+				ceiling = yes
+			}
+		}
+
+		## Less common if already happened
+		multiply = {
+			value = 1
+			scope:province.county = {
+				if = {
+					limit = {
+						has_county_modifier = build_monument_inspiring_speech_modifier
+					}
+					multiply = 0.1
+				}
+				
+			}
+		}
+	}
+
+	effect = {
+		build_monument_success_change_effect = { CHANGE = increase_medium }
+
+		add_activity_log_entry = {
+			key = build_monument_inspiring_speech
+			tags = { pulse_action }
+			character = scope:host
+			
+			scope:host = {
+				add_diplomacy_lifestyle_xp = major_lifestyle_experience
+			}
+
+			build_monument_success_change_effect = { CHANGE = increase_medium }
+
+			scope:province.county = {
+				add_county_modifier = {
+					modifier = build_monument_inspiring_speech_modifier
+					years = 5
+				}
+			}
+		}
+	}
+}
+
+# Held terrible speech for Workers 
+
+build_monument_terrible_speech = {
+	icon = public
+
+	is_valid = {
+		is_current_phase_active = yes
+		has_activity_type = activity_build_monument
+		##TODO: Add checks whether popular opinion was not already applied
+	}
+
+	weight = {
+		value = 1
+		scope:host = {
+			multiply = {
+				value = 50
+				subtract = diplomacy
+				divide = 100
+				min = 0
+			}
+		}
+		## Less common if already happened
+		multiply = {
+			value = 1
+			scope:province.county = {
+				if = {
+					limit = {
+						has_county_modifier = build_monument_terrible_speech_modifier
+					}
+					multiply = 0.1
+				}
+				
+			}
+		}
+	}
+
+	effect = {
+		build_monument_success_change_effect = { CHANGE = decrease_medium }
+
+		add_activity_log_entry = {
+			key = build_monument_terrible_speech
+			tags = { pulse_action }
+			character = scope:host
+
+			scope:province.county = {
+				add_county_modifier = {
+					modifier = build_monument_terrible_speech_modifier
+					years = 5
+				}
+			}
+		}
+	}
+}
+
+# Excess materials gifted to peasants
+
+build_monument_excess_materials_gifted = {
+	icon = public
+
+	is_valid = {
+		is_current_phase_active = yes
+		has_current_phase = build_monument_build
+		has_activity_type = activity_build_monument
+	}
+
+	weight = {
+		value = 1
+		scope:host = {
+			add = {
+				value = stewardship
+				divide = 10
+				ceiling = yes
+			}
+		}
+
+		## Less common if already happened
+		multiply = {
+			value = 1
+			scope:province.county = {
+				if = {
+					limit = {
+						has_county_modifier = build_monument_inspiring_gifted_excess_materials
+					}
+					multiply = 0.1
+				}
+				
+			}
+		}
+	}
+
+	effect = {
+		add_activity_log_entry = {
+			key = build_monument_excess_materials_gifted
+			tags = { pulse_action }
+			character = scope:host
+			
+			scope:host = {
+				add_diplomacy_lifestyle_xp = minor_lifestyle_xp
+			}
+
+			scope:province.county = {
+				add_county_modifier = {
+					modifier = build_monument_inspiring_gifted_excess_materials
+					years = 5
+				}
+			}
+		}
+	}
+}
+
+# Workers are quarelling
+# Master Builder attacked by Workers
+
+build_monument_builder_attacked = {
+	icon = public
+
+	is_valid = {
+		is_current_phase_active = yes
+		has_activity_type = activity_build_monument
+	}
+
+	weight = {
+		value = 1
+
+		scope:activity.special_guest:build_monument_builder = {
+			# Diplomacy offset
+			multiply = {
+				value = 50
+				subtract = diplomacy
+				divide = 100
+				min = 0
+			}
+
+			## On enough diplo, does not happen at all
+			if = {
+				limit = { diplomacy >= 12}
+				multiply = 0
+			}
+		}
+	}
+
+	effect = {
+
+		add_activity_log_entry = {
+			key = build_monument_builder_attacked
+			tags = { pulse_action }
+			character = scope:activity.special_guest:build_monument_builder
+			
+			scope:activity.special_guest:build_monument_builder = {
+				add_trait = wounded_2
+			}
+			build_monument_success_change_effect = { CHANGE = increase_medium }
+		}
+	}
+}
+
+# Broken Tools
+# Material Peddler arrived

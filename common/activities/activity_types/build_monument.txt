@@ -1,0 +1,909 @@
+activity_build_monument = {
+	is_shown = {
+		highest_held_title_tier > tier_barony
+		is_landed = yes
+		trigger_if = {
+			limit = {
+				is_ai = yes
+			}
+			is_at_war = no
+		}
+		is_adult = yes
+		has_focus = diplomacy_majesty_focus
+	}
+	is_valid = {
+		scope:host = {
+			is_imprisoned = no
+			is_landed = yes
+			has_focus = diplomacy_majesty_focus
+			NOT = {
+				is_incapable = yes
+			}
+		}
+	}
+	on_host_death = {
+		every_attending_character = {
+			limit = {
+				is_alive = yes
+			}
+			trigger_event = {
+				id = build_monument.5003
+				days = 1				# So you don't get spammed
+			}
+		}
+		# Code sends your entourage home on invalidated
+		scope:activity.var:host_var = {
+			# Saving the title for loc
+			primary_title = {
+				save_scope_as = host_title
+			}
+			#TODO: Inform your heir if you have one
+			#player_heir ?= {
+			#	trigger_event = {
+			#		id = feast.0800
+			#		days = 1
+			#	}
+			#}
+		}
+	}
+	on_invalidated = {
+		if = {
+			# host is imprisoned
+			limit = {
+				scope:host = {
+					is_imprisoned = yes
+				}
+			}
+			#Host has been imprisoned
+			every_attending_character = {
+				limit = {
+					NOT = {
+						this = scope:host
+					}
+				}
+				trigger_event = build_monument.5013				#TODO: Replace event for attending
+			}
+			scope:host = {
+				trigger_event = playdate.0021				#TODO: Replace event for host
+			}
+		}
+		# Host becomes unlanded
+		if = {
+			limit = {
+				scope:host = {
+					is_landed = no
+				}
+			}
+			scope:activity = {
+				activity_type = {
+					save_scope_as = activity_type
+				}
+			}
+			every_attending_character = {
+				trigger_event = activity_system.0320				#TODO: Replace?
+			}
+		}
+		#Host becomes incapable
+		if = {
+			limit = {
+				scope:host = {
+					is_incapable = yes
+				}
+			}
+			scope:activity = {
+				activity_type = {
+					save_scope_as = activity_type
+				}
+			}
+			scope:host = {
+				trigger_event = activity_system.0330
+			}
+			every_attending_character = {
+				limit = {
+					NOT = {
+						this = scope:host
+					}
+				}
+				trigger_event = activity_system.0331
+			}
+		}
+	}
+	###################
+	# PARAMETERS
+	###################
+	is_grand_activity = no
+	is_single_location = yes
+	province_filter = domain
+	ai_province_filter = capital
+	max_route_deviation_mult = 2
+	is_location_valid = {
+		has_holding = yes
+	}
+	province_description = {
+		#desc = activity_feast_province_desc
+		#TODO: add development description checks for provinces
+	}
+	province_score = {
+		value = 0
+		#TODO: Development Check
+		#TODO: Invalidate province score if it has monument buff
+	}
+	#TODO: Reinstate after debugging
+	#cooldown = {
+	#	years = 5
+	#}
+	ai_will_do = {
+		add = {
+			value = 30
+			desc = "Base"
+		}
+		add = {
+			value = ai_greed
+			multiply = -0.5
+			desc = "ai_greed"
+		}
+		add = {
+			value = ai_sociability
+			multiply = 0.5
+			desc = "ai_sociability"
+		}
+		if = {
+			limit = {
+				ai_energy < 0
+			}
+			add = {
+				add = ai_energy
+				desc = "ai_energy"
+			}
+		}
+		if = {
+			limit = {
+				has_trait = august
+			}
+			multiply = {
+				value = 3
+				desc = "Is August"
+			}
+		}
+		if = {
+			limit = {
+				has_trait = shy
+			}
+			add = {
+				value = -30
+				desc = "Is shy"
+			}
+		}
+		if = {
+			limit = {
+				has_trait = reclusive
+			}
+			add = {
+				value = -30
+				desc = "Is reclusive"
+			}
+		}
+		if = {
+			limit = {
+				short_term_gold >= build_monument_normal_option_cost
+				short_term_gold >= major_gold_value
+			}
+			add = {
+				value = 30
+				desc = "Got gold to burn"
+			}
+		}
+		if = {
+			limit = {
+				has_royal_court = yes
+				has_court_type = court_diplomatic
+			}
+			add = {
+				value = 10
+				desc = "Diplomatic court trait"
+			}
+		}
+		# Stress
+		if = {
+			# Low Stress
+			limit = {
+				stress >= lower_than_baseline_stress
+				NOT = {
+					has_trait = shy
+				}
+			}
+			add = {
+				value = 20
+				desc = "lower_than_baseline_stress"
+			}
+		}
+		if = {
+			# High Stress
+			limit = {
+				stress >= higher_than_baseline_stress
+				NOT = {
+					has_trait = shy
+				}
+			}
+			add = {
+				value = -10
+				desc = "higher_than_baseline_stress"
+			}
+		}
+		if = {
+			# Very High Stress
+			limit = {
+				stress >= high_stress
+				NOT = {
+					has_trait = shy
+				}
+			}
+			add = {
+				value = -30
+				desc = "high_stress"
+			}
+		}
+		if = {
+			limit = {
+				is_independent_ruler = no
+				has_vassal_stance = courtly
+			}
+			add = {
+				value = 10
+				desc = courtly
+			}
+		}
+		# Economic Archetype
+		if = {
+			# Too busy booming the economy
+			limit = {
+				OR = {
+					ai_has_economical_boom_personality = yes
+					has_character_flag = ai_boom
+				}
+			}
+			add = {
+				value = -200
+				desc = "Builder"
+			}
+		}
+		# Legitimacy
+		if = {
+			limit = {
+				is_valid_for_legitimacy_change = yes
+			}
+			if = {
+				# Low Legitimacy
+				limit = {
+					OR = {
+						legitimacy_level = 1
+						legitimacy_level = 2
+					}
+				}
+				add = {
+					value = 10
+					desc = "low_legitimacy"
+				}
+			}
+			if = {
+				# Very Low Legitimacy
+				limit = {
+					legitimacy_level = 0
+				}
+				add = {
+					value = 20
+					desc = "low_legitimacy"
+				}
+			}
+		}
+		# Plague
+		if = {
+			limit = {
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						any_province_epidemic = {
+							count >= 1
+							outbreak_intensity < apocalyptic
+						}
+					}
+				}
+				would_follow_social_distancing_value >= -1
+			}
+			add = {
+				value = -60
+				desc = "Plague in Domain"
+			}
+		}
+		else_if = {
+			limit = {
+				any_realm_county = {
+					any_county_province = {
+						any_province_epidemic = {
+							count >= 1
+							outbreak_intensity < apocalyptic
+						}
+					}
+				}
+				would_follow_social_distancing_value >= -1
+			}
+			add = {
+				value = -20
+				desc = "Plague in Top Realm"
+			}
+		}
+		if = {
+			limit = {
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						any_province_epidemic = {
+							count >= 1
+							outbreak_intensity = apocalyptic
+						}
+					}
+				}
+			}
+			add = {
+				value = -200
+				desc = "Apocalyptic Plague in Domain"
+			}
+		}
+		else_if = {
+			limit = {
+				any_held_title = {
+					tier = tier_county
+					any_county_province = {
+						any_province_epidemic = {
+							count >= 1
+							outbreak_intensity = apocalyptic
+						}
+					}
+				}
+			}
+			add = {
+				value = -40
+				desc = "Apocalyptic Plague in Top Realm"
+			}
+		}
+	}
+	###################
+	# GUEST HANDLING
+	###################
+	max_guests = 15
+	guest_invite_rules = {
+		rules = {
+			# Relations.
+			2 = activity_invite_rule_lovers
+			2 = activity_invite_rule_rivals_if_appropriate
+			# Family.
+			3 = activity_invite_rule_extended_family
+			# Misc landless.
+			5 = activity_invite_rule_knights
+			# MP 
+			6 = activity_invite_mp
+		}
+		defaults = {
+			1 = activity_invite_rule_friends
+			1 = activity_invite_rule_close_family
+			1 = activity_invite_rule_vassals
+			3 = activity_invite_rule_courtiers
+			4 = activity_invite_rule_guests
+			1 = activity_invite_spouses
+		}
+	}
+	can_be_activity_guest = {
+		OR = {
+			# Anyone with high Admin or Diplo
+			AND = {
+				is_adult = yes
+				OR = {
+					stewardship >= 12
+					diplomacy >= 12
+				}
+			}
+			# Player heir if old enough
+			AND = {
+				age > 11
+				is_player_heir_of = scope:host
+			}
+		}
+		is_vassal_of = scope:host
+		is_healthy = yes
+		in_diplomatic_range = scope:host
+	}
+	host_intents = {
+		intents = {
+			reduce_stress_intent
+		}
+		default = reduce_stress_intent
+	}
+	guest_intents = {
+		intents = {
+			reduce_stress_intent
+		}
+		default = reduce_stress_intent
+	}
+	special_guests = {
+		#TODO: add localization
+		build_monument_builder = {
+			is_required = no
+			is_shown = {
+				#always
+			}
+			can_pick = {
+				NOT = {
+					this = scope:host
+				}
+				is_healthy = yes
+				is_adult = yes
+				trigger_if = {
+					limit = {
+						scope:host = {
+							is_ai = yes
+						}
+					}
+					OR = {
+						is_vassal_of = scope:host
+						target_is_vassal_or_below = scope:host
+						has_relation_friend = scope:host
+						has_relation_lover = scope:host
+						stewardship >= 12
+					}
+				}
+			}
+			ai_will_do = {
+				value = 10
+				#TODO: Decreae for rival
+			}
+		}
+	}
+
+	#### GRAPHICS ####
+
+	# Travel
+	# Farmland, Settled Generic
+	background = {
+		trigger = {
+			# Host and Builder are travelling
+			OR = {
+				NOT = {
+					scope:host.location = scope:activity.activity_location
+				}
+				AND = {
+					exists = scope:activity.special_guest:build_monument_builder.location
+					NOT = {
+						scope:activity.special_guest:build_monument_builder.location ?= scope:activity.activity_location
+					}
+				}
+				AND = {
+					exists = scope:activity.special_guest:honorary_guest_regular.location
+					NOT = {
+						scope:activity.special_guest:honorary_guest_regular.location ?= scope:activity.activity_location
+					}
+				}
+			}
+		}
+		texture = "gfx/interface/illustrations/event_scenes/ep2_travel_farm.dds"
+		environment = "environment_travel_farmlands"
+		ambience = "event:/SFX/Events/Backgrounds/fields_farms_day"
+	}
+
+	# End Travel
+
+	# Survey
+	background = {
+		trigger = {
+			scope:activity = {
+				has_current_phase = build_monument_survey
+			}
+		}
+		texture = "gfx/interface/illustrations/event_scenes/ep2_travel_farm.dds"
+		environment = "environment_travel_farmlands"
+		ambience = "event:/SFX/Events/Backgrounds/fields_farms_day"
+	}
+
+
+	# Building
+
+	# City
+	background = {
+		trigger = {
+			scope:activity = {
+				has_current_phase = build_monument_build
+				has_variable = build_monument_survey_city_selected
+			}
+		}
+		##TODO: Select city
+		texture = "gfx/interface/illustrations/event_scenes/ep2_village_festival_western.dds"
+		environment = "environment_village_festival"
+		ambience = "event:/SFX/Events/Backgrounds/corner_of_tavern"
+	}
+
+	# Wayshrine
+	background = {
+		trigger = {
+			scope:activity = {
+				has_current_phase = build_monument_build
+				has_variable = build_monument_survey_wayshrine_selected
+			}
+		}
+	
+		texture = "gfx/interface/illustrations/event_scenes/ep2_travel_farm.dds"
+		environment = "environment_travel_farmlands"
+		ambience = "event:/SFX/Events/Backgrounds/fields_farms_day"
+	}
+
+	# Barracks
+	background = {
+		trigger = {
+			scope:activity = {
+				has_current_phase = build_monument_build
+				has_variable = build_monument_survey_barracks_selected
+			}
+		}
+
+		texture = "gfx/interface/illustrations/event_scenes/genericcamp.dds"
+		environment = "environment_event_genericcamp"
+		ambience = "event:/SFX/Events/Backgrounds/camp_generic_day"
+	}
+
+
+	# Window Characters
+
+	window_characters = {
+		# Host
+		host = {
+			camera = camera_event_center
+			animation = chancellor
+
+			effect = {
+				# At location
+				if = {
+					limit = {
+						scope:host.location = scope:activity.activity_location
+					}
+					scope:host = {
+						add_to_list = characters
+					}
+				}
+			}
+		}
+
+		# Builder
+		builder = {
+			camera = camera_event_right
+			animation = chancellor
+
+			effect = {
+				# At location
+				if = {
+					limit = {
+						scope:special_guest:build_monument_builder ?= {
+							add_to_list = characters
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	### Plug in widgets
+	activity_window_widgets = {
+		build_monument_success_chance = "activity_plugin_widgets_summary"
+	}
+
+	
+	###################
+	# OPTIONS
+	###################
+	options = {
+		build_monument_option_material_quality = {
+			build_monument_option_material_quality_bad = {
+				ai_will_do = {
+					value = 0
+					# Financial preference.
+					add = activity_option_likes_cheap_expense_value
+				}
+			}
+			build_monument_option_material_quality_normal = {
+				default = yes
+				cost = {
+					gold = {
+						add = {
+							add = {
+								value = 10
+								desc = build_monument_option_material_quality_normal
+							}
+							add = {
+								value = 10
+								multiply = activity_cost_scale_by_tier
+								subtract = 10
+								desc = activity_cost_scale_by_tier_desc
+							}
+							add = {
+								value = 10
+								multiply = activity_cost_scale_by_era
+								subtract = 10
+								desc = activity_cost_scale_by_era_desc
+							}
+							#TODO: Check for modifiers that could lesten cost of materials
+							min = 0
+						}
+					}
+				}
+				ai_will_do = {
+					value = 0
+					# Financial preference.
+					add = activity_option_likes_middling_expense_value
+				}
+			}
+			build_monument_option_material_quality_good = {
+				cost = {
+					gold = {
+						add = {
+							add = {
+								value = 35
+								desc = build_monument_option_material_quality_normal
+							}
+							add = {
+								value = 35
+								multiply = activity_cost_scale_by_tier
+								subtract = 35
+								desc = activity_cost_scale_by_tier_desc
+							}
+							add = {
+								value = 35
+								multiply = activity_cost_scale_by_era
+								subtract = 35
+								desc = activity_cost_scale_by_era_desc
+							}
+							#TODO: Check for modifiers that could lesten cost of materials
+							min = 0
+						}
+					}
+				}
+				ai_will_do = {
+					value = 0
+					# Financial preference.
+					add = activity_option_likes_heavy_expense_value
+				}
+			}
+		}
+	}
+	###################
+	# PHASES
+	###################
+
+	max_guest_arrival_delay_time = {
+		months = 1
+	}
+
+	phases = {
+		build_monument_survey = {
+			order = 1
+			is_predefined = yes
+			is_valid = {
+				always = yes
+			}
+			on_monthly_pulse = {
+				# Fires for every attendee
+				trigger_event = {
+					on_action = build_monument_survey_selection
+					days = {
+						1
+						3
+					}
+				}
+				#Variance on more events
+				random = {
+					chance = {
+						value = 10
+						if = {
+							limit = {
+								this = scope:activity.activity_host
+							}
+							add = 40
+						}
+					}
+					trigger_event = {
+						on_action = build_monument_survey_selection
+						days = {
+							15
+							20
+						}
+					}
+				}
+			}
+			on_phase_active = {
+				## Host execution
+				if = {
+					limit = {
+						this = scope:host
+					}
+					## Progress time
+					scope:activity = {
+						progress_activity_phase_after = {
+							#TODO: tune
+							months = 1
+						}
+					}
+					
+					trigger_event = build_monument.1000
+				}
+				## Every other attendant
+				else = {
+				}
+			}
+		}
+
+		build_monument_build = {
+			order = 2
+			is_predefined = yes
+			is_valid = {
+				always = yes
+			}
+
+			on_monthly_pulse = {
+				# Fires for every attendee
+				trigger_event = {
+					on_action = build_monument_build_selection
+					days = {
+						1
+						3
+					}
+				}
+				#Variance on more events
+				random = {
+					chance = {
+						value = 10
+						if = {
+							limit = {
+								this = scope:activity.activity_host
+							}
+							add = 40
+						}
+					}
+					trigger_event = {
+						on_action = build_monument_build_selection
+						days = {
+							15
+							20
+						}
+					}
+				}
+			}
+			
+			on_enter_phase = {
+				## Host execution
+				if = {
+					limit = {
+						this = scope:host
+					}
+					## Progress time
+					scope:activity = {
+						progress_activity_phase_after = {
+							days = 14
+						}
+					}
+				}
+			}
+
+			on_phase_active = {
+				## Host execution
+				if = {
+					limit = {
+						this = scope:host
+					}
+					## Progress time
+					scope:activity = {
+						progress_activity_phase_after = {
+							#TODO Tune
+							months = 1
+						}
+					}
+					
+				}
+				## Every other attendant
+				else = {
+				}
+			}
+		}
+
+		build_monument_finish = {
+			order = 3
+			is_predefined = yes
+			
+			on_enter_phase = {
+				if = {
+					limit = {
+						this = scope:host
+					}
+					scope:activity = {
+						progress_activity_phase_after = {
+							days = 1
+						}
+					}
+				}
+			}
+
+			on_phase_active = {
+				# Trigger conclusion
+
+				if = {
+					limit = {
+						this = scope:host
+					}
+					scope:activity = {
+						progress_activity_phase_after = {
+							days = 1
+						}
+					}
+				}
+
+				random = {
+					#Successful Monument based on chance
+					chance = {
+						value = var:build_monument_success_chance
+					}
+					set_variable = {
+						name = build_monument_success
+						value = yes
+					}
+				}
+				if = {
+					## Success
+					limit = {
+						has_variable = build_monument_success
+						var:build_monument_success = yes
+					}
+					## TODO: Trigger Success event for host
+					## TODO: Trigger Success event for guests
+				}
+				else = {
+					## Failure
+					## TODO: Trigger Failure event for host
+					## TODO: Trigger Failure event for guests
+				}
+			}
+		}
+	}
+	###################
+	# ACTIVITY-SPECIFIC PULSES
+	###################
+	pulse_actions = {
+		##TODO: Populate
+		entries = {
+			build_monument_inspiring_speech
+			build_monument_terrible_speech
+			build_monument_excess_materials_gifted
+		}
+		chance_of_no_event = 5
+	}
+	###################
+	# Lifecycle
+	###################
+	on_start = {
+		set_variable = {
+			name = build_monument_success_chance
+			value = build_monument_success_chance_value
+		}
+		##TODO: Localize log entry
+		add_activity_log_entry = {
+			key = build_monument_start_log
+			character = scope:host
+			score = 10
+		}
+	}
+	#TODO: Fire arrival event
+	on_enter_passive_state = {
+		#trigger_event = build_monument.XXXX
+	}
+	## Execute conclusion (Post Lifecycle, Rewards given by phase on_end)
+	on_complete = {
+		# Host conclusion
+		# Builder conclusion
+		# Other attendant conclusion
+	}
+}

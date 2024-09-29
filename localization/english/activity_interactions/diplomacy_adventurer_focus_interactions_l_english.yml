@@ -1,0 +1,11 @@
+﻿l_english:
+
+lifestyle_activities_adventurer_diplomacy_ruler_offer: "Provide court diplomacy"
+lifestyle_activities_adventurer_diplomacy_ruler_offer_desc: "As you devoted your life to the in and outs of courts, you may offer to help [recipient.GetName]"
+
+diplomacy_adventurer_give_prestige_small: "Offer a little praise"
+diplomacy_adventurer_give_prestige_medium: "Offer a decent amount of praise"
+diplomacy_adventurer_give_prestige_large: "Offer a tremendous amount of praise"
+diplomacy_adventurer_increase_vassal_relations: "Praise him in front of his vassals"
+
+diplomacy_adventurer_increase_vassal_opinion_opinion: "Praised by charismatic adventurer"
