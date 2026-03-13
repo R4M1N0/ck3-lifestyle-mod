@@ -17,3 +17,8 @@ build_monument_inspiring_gifted_excess_materials = {
 	icon = county_modifier_development_positive
 	development_growth_factor = 0.5
 }
+
+build_monument_tyranny_on_country_modifier = {
+	icon = county_modifier_opinion_negative
+	county_opinion_add = -25
+}

@@ -6,4 +6,4 @@ tags={
 	"Gameplay"
 }
 name="Lifestyle Activities"
-supported_version="1.13.0"
+supported_version="1.16.1"

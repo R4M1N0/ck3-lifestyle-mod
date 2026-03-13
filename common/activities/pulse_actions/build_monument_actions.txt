@@ -177,6 +177,10 @@ build_monument_builder_attacked = {
 	is_valid = {
 		is_current_phase_active = yes
 		has_activity_type = activity_build_monument
+		scope:activity.special_guest:build_monument_builder = {
+			is_alive = yes
+			is_participant_in_activity = scope:activity
+		}
 	}
 
 	weight = {

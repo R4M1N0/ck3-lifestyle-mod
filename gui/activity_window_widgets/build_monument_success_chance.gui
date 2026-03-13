@@ -38,3 +38,24 @@ vbox = {
 		}
 	}
 }
+
+# TODO Show selected survey type
+#vbox = {
+#	layoutpolicy_horizontal = expanding
+#	spacing = 10
+#
+#	text_single = {
+#		text = BUILD_MONUMENT_SURVEY_TYPE
+#		visible = {
+#				scope:activity = {
+#			OR = {
+#				has_variable = build_monument_survey_city_selected
+#				has_variable = build_monument_survey_wayshrine_selected
+#				has_variable = build_monument_survey_barracks_selected
+#			}
+#			}
+#		}
+#		align = nobaseline
+#	}
+#}
+

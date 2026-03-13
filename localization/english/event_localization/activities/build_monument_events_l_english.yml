@@ -2,6 +2,7 @@
 
 
 #### COMMON
+build_monument_success_bar: "Success Chance"
 activity_build_monument: "Build Monument"
 TRAVEL_NAME_FOR_activity_build_monument: "Build Monument"
 activity_build_monument_desc: "Build a monument to imspire your legend!"
@@ -55,6 +56,8 @@ build_monument_city_center_survey_buyout_title: "City center spot has been bough
 build_monument_city_center_survey_wayshrine_city_support_log_title: "You decided to build the wayshrine monument closer to a city"
 build_monument_city_center_survey_wayshrine_church_support_log_title: "You decided to build the wayshrine monument closer to a church"
 
+build_monument_city_center_merchant_title: "You dealt with a merchant"
+
 #### PULSE ACTIONS
 build_monument_inspiring_speech_title: "You give an inspiring speech to the peasant workers"
 build_monument_terrible_speech_title: "You give a terrible speech to the peasant workers"
@@ -69,6 +72,10 @@ build_monument_terrible_rejected_generous_merchant_offer_modifier: "Generous loc
 
 
 #### EVENTS
+build_monument.0100.t: "Stacking Stones"
+build_monument.0100.desc: "Sending out the letters to my fellow and able subjects to meet me at [activity.GetCurrentPhase.GetLocation.GetBaronyNameExplicitly], I will move on and eagerly await them."
+build_monument.0100.a: "This will be glorious"
+
 build_monument.1000.t: "Surveying the land"
 build_monument.1000.desc: "We arrived in [activity.GetCurrentPhase.GetLocation.GetBaronyNameExplicitly] to build a monument commerorating my character and saga. I will have to decide on the best spot on where to build my grand monument"
 build_monument.1000.a: "In the city nearby, a lot of people will see it."
@@ -103,6 +110,15 @@ build_monument.1110.desc: "A local merchant has come forward to me praising my r
 build_monument.1110.a: "You graciously accept."
 build_monument.1110.b: "You insist on paying for his land."
 build_monument.1110.c: "We will make do without your land."
+
+build_monument.1111.t: "Hostile merchant makes move"
+build_monument.1111.desc: "A local merchant has come forward to implore me of his acquired usage rights. 'My liege, this land in [activity.GetCurrentPhase.GetLocation.GetBaronyNameExplicitly] is mine by merit and nifty trade. I acquired it fair and square from one of your lower subjects. It would only be fair to reimburse me, we are not savages after all.'"
+build_monument.1111.a: "You reimburse the merchant."
+build_monument.1111.b: "You turn the legal matters in your favour."
+build_monument.1111.b.success.tt: "You convice the merchant to only pay a token obligation."
+build_monument.1111.b.failure.tt: "The disgruntled merchant will not give you the plot"
+build_monument.1111.c: "You will remember who rules in [activity.GetCurrentPhase.GetLocation.GetBaronyNameExplicitly]!"
+build_monument.1111.d: "'Fine, we will look somewhere else then'"
 
 
 

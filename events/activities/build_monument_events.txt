@@ -15,6 +15,25 @@ namespace = build_monument
 #
 ####################################
 # BUILD MONUMENT SURVEY EVENTS
+# 0000-0999
+####################################
+#Arrival
+build_monument.0100 = {
+	type = activity_event
+	title = build_monument.0100.t
+	desc = build_monument.0100.desc
+	theme = diplomacy_majesty_focus
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	option = {
+		name = build_monument.0100.a
+	}
+}
+
+####################################
+# BUILD MONUMENT SURVEY EVENTS
 # 1000-1999
 ####################################
 #Event for selection where to build monument
@@ -302,7 +321,6 @@ build_monument.1102 = {
 }
 
 # Local tradesman offer land
-
 build_monument.1110 = {
 	type = activity_event
 	title = build_monument.1110.t
@@ -321,87 +339,85 @@ build_monument.1110 = {
 		scope:activity = {
 			has_current_phase = build_monument_survey
 			has_variable = build_monument_survey_city_selected
+			#Not fought against other merchants
+			not = {
+				has_variable = build_monument_survey_city_merchant_event_happened
+			}
 		}
 		scope:host = root
 	}
-
-
 	immediate = {
 		create_character = {
 			template = good_merchant_template
 			location = root.location
-			culture = root.location.county.culture # They should look like a local
+			culture = root.location.county.culture			# They should look like a local
 			faith = root.faith
 			dynasty = none
 			#Set up the scope
 			save_scope_as = good_merchant_scope
 		}
+		scope:activity = {
+			set_variable = {
+				name = build_monument_survey_city_merchant_event_happened
+				value = yes
+			}
+		}
 	}
-
-	
 	after = {
 		scope:good_merchant_scope = {
 			if = {
 				limit = {
-					root = { is_ai = yes }
+					root = {
+						is_ai = yes
+					}
 				}
 				silent_disappearance_effect = yes
 			}
 		}
 	}
-
 	#You take his free offer
 	option = {
 		name = build_monument.1110.a
- 
 		scope:activity = {
 			add_activity_log_entry = {
-				key = build_monument_city_center_survey_wayshrine_city_support_log
+				key = build_monument_city_center_merchant_title
 				character = root
 				build_monument_success_change_effect = {
 					CHANGE = increase_medium
 				}
-
 				scope:host = {
 					add_prestige = medium_prestige_loss
 				}
 			}
 		}
 	}
-
 	#You insist on paying
 	option = {
 		name = build_monument.1110.b
-
 		scope:activity = {
 			add_activity_log_entry = {
-				key = build_monument_city_center_survey_wayshrine_city_support_log
+				key = build_monument_city_center_merchant_title
 				character = root
 				build_monument_success_change_effect = {
 					CHANGE = increase_medium
 				}
-
 				scope:host = {
 					add_prestige = medium_prestige_gain
 					remove_short_term_gold = medium_gold_value
 				}
-				
 			}
 		}
 	}
-
 	#You reject his offer
 	option = {
 		name = build_monument.1110.c
-
 		scope:activity = {
 			add_activity_log_entry = {
-				key = build_monument_city_center_survey_wayshrine_city_support_log
+				key = build_monument_city_center_merchant_title
 				character = root
 				build_monument_success_change_effect = {
 					CHANGE = decrease_minor
 				}
-
 				#Irritated merchants
 				scope:province.county = {
 					add_county_modifier = {
@@ -414,8 +430,156 @@ build_monument.1110 = {
 	}
 }
 
-
 # Local tradesmen resist
+build_monument.1111 = {
+	type = activity_event
+	title = build_monument.1111.t
+	desc = build_monument.1111.desc
+	theme = diplomacy_majesty_focus
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	right_portrait = {
+		character = scope:good_merchant_scope
+		animation = personality_vengeful
+	}
+	trigger = {
+		#Must have city selected
+		scope:activity = {
+			has_current_phase = build_monument_survey
+			has_variable = build_monument_survey_city_selected
+		}
+		scope:host = root
+	}
+	immediate = {
+		create_character = {
+			template = good_merchant_template
+			location = root.location
+			culture = root.location.county.culture			# They should look like a local
+			faith = root.faith
+			dynasty = none
+			#Set up the scope
+			save_scope_as = good_merchant_scope
+		}
+		scope:activity = {
+			set_variable = {
+				name = build_monument_survey_city_merchant_event_happened
+				value = yes
+			}
+		}
+	}
+	after = {
+		scope:good_merchant_scope = {
+			if = {
+				limit = {
+					root = {
+						is_ai = yes
+					}
+				}
+				silent_disappearance_effect = yes
+			}
+		}
+	}
+	#You buy his plot
+	option = {
+		name = build_monument.1111.a
+		scope:activity = {
+			add_activity_log_entry = {
+				key = build_monument_city_center_merchant_title
+				character = root
+				build_monument_success_change_effect = {
+					CHANGE = increase_medium
+				}
+				scope:host = {
+					remove_short_term_gold = medium_gold_value
+				}
+			}
+		}
+	}
+	#You legalistically convince him
+	option = {
+		name = build_monument.1111.b
+		duel = {
+			skill = stewardship
+			value = 15
+			target = scope:host
+			# Success
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = 3.5
+					min = -49
+				}
+				desc = build_monument.1111.b.success.tt
+				scope:activity = {
+					add_activity_log_entry = {
+						key = build_monument_city_center_merchant_title
+						character = root
+						build_monument_success_change_effect = {
+							CHANGE = increase_medium
+						}
+						remove_short_term_gold = small_gold_value
+					}
+				}
+			}
+			# Failure
+			50 = {
+				compare_modifier = {
+					value = scope:duel_value
+					multiplier = -3.5
+					min = -49
+				}
+				desc = build_monument.1111.b.failure.tt
+				scope:activity = {
+					add_activity_log_entry = {
+						key = build_monument_city_center_merchant_title
+						character = root
+						build_monument_success_change_effect = {
+							CHANGE = decrease_medium
+						}
+					}
+				}
+			}
+		}
+	}
+	#You punish him
+	option = {
+		name = build_monument.1111.c
+		scope:activity = {
+			add_activity_log_entry = {
+				key = build_monument_city_center_merchant_title
+				character = root
+				build_monument_success_change_effect = {
+					CHANGE = increase_medium
+				}
+				scope:host = {
+					add_dread = medium_dread_gain
+				}
+				scope:province.county = {
+					add_county_modifier = {
+						modifier = build_monument_tyranny_on_country_modifier
+						years = 5
+					}
+				}
+			}
+		}
+	}
+	#You reject his offer
+	option = {
+		name = build_monument.1111.d
+		scope:activity = {
+			add_activity_log_entry = {
+				key = build_monument_city_center_survey_wayshrine_city_support_log
+				character = root
+				build_monument_success_change_effect = {
+					CHANGE = decrease_minor
+				}
+			}
+		}
+	}
+}
+
 # Local city has inadequate infrastructure
 # Local city has adequate infrastructure
 ## Survey Wayshrine
