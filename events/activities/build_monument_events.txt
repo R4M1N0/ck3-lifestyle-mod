@@ -56,7 +56,7 @@ build_monument.1000 = {
 	#City
 	option = {
 		name = build_monument.1000.a
-		custom_tooltip = build_monument.1000.a.t
+		custom_tooltip = build_monument.1000.a.tt
 		scope:activity = {
 			set_variable = {
 				name = build_monument_survey_city_selected
