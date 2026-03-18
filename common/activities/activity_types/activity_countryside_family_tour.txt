@@ -1,0 +1,41 @@
+activity_countryside_family_tour = {
+	province_filter = realm
+	ai_province_filter = realm
+	is_single_location = yes
+	max_guests = 15
+	allow_zero_guest_invites = no
+	ai_check_interval = 12
+
+
+
+
+
+
+	phases = {
+	}
+	cooldown = {
+		years = 5
+	}
+	max_guest_arrival_delay_time = {
+		months = 3
+	}
+	is_shown = {
+		is_adult = yes
+		is_landed = yes
+	}
+	is_valid = {
+		scope:host = {
+			is_landed = yes
+		}
+	}
+	on_start = {
+	}
+	on_complete = {
+	}
+	ai_will_do = {
+		value = 100
+	}
+	can_be_activity_guest = {
+	is_close_or_extended_family_of = scope:host
+}
+}
