@@ -11,8 +11,6 @@ activity_countryside_family_tour = {
 
 
 
-	phases = {
-	}
 	cooldown = {
 		years = 5
 	}
@@ -38,4 +36,81 @@ activity_countryside_family_tour = {
 	can_be_activity_guest = {
 	is_close_or_extended_family_of = scope:host
 }
+	phases = {
+		activity_countryside_family_tour_phase_arrive = {
+			is_predefined = yes
+			order = 1
+		}
+	}
+	options = {
+		activity_countryside_family_tour_option_lodgings = {
+			activity_countryside_family_tour_option_lodgings_poor = {
+				default = no
+				cost = { gold = {
+	add = {
+		add = {
+			value = 10
+		}
+		add = {
+			value = 10
+			multiply = activity_cost_scale_by_tier
+			subtract = 10
+			desc = activity_cost_scale_by_tier_desc
+		}
+		add = {
+			value = 10
+			multiply = activity_cost_scale_by_era
+			subtract = 10
+			desc = activity_cost_scale_by_era_desc
+		}
+		min = 0
+	}
+} prestige = {
+	add = {
+		add = {
+			value = 10
+		}
+		add = {
+			value = 10
+			multiply = activity_cost_scale_by_tier
+			subtract = 10
+			desc = activity_cost_scale_by_tier_desc
+		}
+		add = {
+			value = 10
+			multiply = activity_cost_scale_by_era
+			subtract = 10
+			desc = activity_cost_scale_by_era_desc
+		}
+		min = 0
+	}
+} }
+				ai_will_do = {
+	add = activity_option_likes_cheap_expense_value
+}
+			}
+			activity_countryside_family_tour_option_lodgings_medium = {
+				default = yes
+				cost = { gold = {
+	add = {
+		add = {
+			value = 20
+		}
+		add = {
+			value = 20
+			multiply = activity_cost_scale_by_tier
+		}
+		add = {
+			value = 10
+			multiply = activity_cost_scale_by_era
+		}
+		min = 0
+	}
+} }
+				ai_will_do = {
+	add = activity_option_likes_middling_expense_value
+}
+			}
+		}
+	}
 }
