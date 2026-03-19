@@ -1,0 +1,16 @@
+namespace = activity_countryside_family_tour
+
+activity_countryside_family_tour.1000 = {
+	type = activity_event
+
+	title = activity_countryside_family_tour.1000.t
+	desc = activity_countryside_family_tour.1000.desc
+	theme = diplomacy
+
+	option = {
+		name = activity_countryside_family_tour.1000.a
+		{
+		add_stress = -30
+		}
+	}
+}

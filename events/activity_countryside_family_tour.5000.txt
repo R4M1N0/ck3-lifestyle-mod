@@ -1,0 +1,22 @@
+namespace = activity_countryside_family_tour
+
+activity_countryside_family_tour.5000 = {
+	type = character_event
+
+	title = activity_countryside_family_tour.5000.t
+	desc = activity_countryside_family_tour.5000.desc
+	theme = activity
+
+	option = {
+		name = activity_countryside_family_tour.5000.a
+		{
+		add_prestige = 200
+		}
+	}
+	option = {
+		name = activity_countryside_family_tour.5000.b
+		{
+		add_stress = 33
+		}
+	}
+}

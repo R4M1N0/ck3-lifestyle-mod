@@ -11,6 +11,16 @@ activity_countryside_family_tour = {
 
 
 
+
+
+
+
+
+
+
+
+
+
 	cooldown = {
 		years = 5
 	}
@@ -29,7 +39,8 @@ activity_countryside_family_tour = {
 	on_start = {
 	}
 	on_complete = {
-	}
+	trigger_event = activity_countryside_family_tour.5000
+}
 	ai_will_do = {
 		value = 100
 	}
@@ -40,6 +51,11 @@ activity_countryside_family_tour = {
 		activity_countryside_family_tour_phase_arrive = {
 			is_predefined = yes
 			order = 1
+			on_monthly_pulse = {
+	trigger_event = {
+		on_action = activity_countryside_family_tour_on_action
+	}
+}
 		}
 	}
 	options = {
@@ -112,5 +128,11 @@ activity_countryside_family_tour = {
 }
 			}
 		}
+	}
+	special_guests = {
+		activity_countryside_family_tour_special_guest = {
+		}
+	}
+	guest_invite_rules = {
 	}
 }

@@ -346,6 +346,14 @@ build_monument.1110 = {
 		}
 		scope:host = root
 	}
+
+
+	#You take his free offer
+
+	#You insist on paying
+
+	#You reject his offer
+
 	immediate = {
 		create_character = {
 			template = good_merchant_template
@@ -375,57 +383,54 @@ build_monument.1110 = {
 			}
 		}
 	}
-	#You take his free offer
 	option = {
 		name = build_monument.1110.a
 		scope:activity = {
-			add_activity_log_entry = {
-				key = build_monument_city_center_merchant_title
-				character = root
-				build_monument_success_change_effect = {
-					CHANGE = increase_medium
-				}
-				scope:host = {
-					add_prestige = medium_prestige_loss
-				}
-			}
+		add_activity_log_entry = {
+		key = build_monument_city_center_merchant_title
+		character = root
+		build_monument_success_change_effect = {
+		CHANGE = increase_medium
+		}
+		scope:host = {
+		add_prestige = medium_prestige_loss
+		}
+		}
 		}
 	}
-	#You insist on paying
 	option = {
 		name = build_monument.1110.b
 		scope:activity = {
-			add_activity_log_entry = {
-				key = build_monument_city_center_merchant_title
-				character = root
-				build_monument_success_change_effect = {
-					CHANGE = increase_medium
-				}
-				scope:host = {
-					add_prestige = medium_prestige_gain
-					remove_short_term_gold = medium_gold_value
-				}
-			}
+		add_activity_log_entry = {
+		key = build_monument_city_center_merchant_title
+		character = root
+		build_monument_success_change_effect = {
+		CHANGE = increase_medium
+		}
+		scope:host = {
+		add_prestige = medium_prestige_gain
+		remove_short_term_gold = medium_gold_value
+		}
+		}
 		}
 	}
-	#You reject his offer
 	option = {
 		name = build_monument.1110.c
 		scope:activity = {
-			add_activity_log_entry = {
-				key = build_monument_city_center_merchant_title
-				character = root
-				build_monument_success_change_effect = {
-					CHANGE = decrease_minor
-				}
-				#Irritated merchants
-				scope:province.county = {
-					add_county_modifier = {
-						modifier = build_monument_terrible_rejected_generous_merchant_offer_modifier
-						years = 5
-					}
-				}
-			}
+		add_activity_log_entry = {
+		key = build_monument_city_center_merchant_title
+		character = root
+		build_monument_success_change_effect = {
+		CHANGE = decrease_minor
+		}
+		#Irritated merchants
+		scope:province.county = {
+		add_county_modifier = {
+		modifier = build_monument_terrible_rejected_generous_merchant_offer_modifier
+		years = 5
+		}
+		}
+		}
 		}
 	}
 }

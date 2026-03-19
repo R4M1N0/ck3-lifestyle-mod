@@ -1,0 +1,5 @@
+activity_countryside_family_tour_on_action = {
+	random_events = {
+		50 = activity_countryside_family_tour.1000
+	}
+}

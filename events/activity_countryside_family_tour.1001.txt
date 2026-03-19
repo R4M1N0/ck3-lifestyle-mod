@@ -1,0 +1,45 @@
+namespace = activity_countryside_family_tour
+
+activity_countryside_family_tour.1001 = {
+	type = character_event
+
+	title = activity_countryside_family_tour.1001.t
+	desc = activity_countryside_family_tour.1001.desc
+	theme = activity
+
+	immediate = {
+	create_character = {
+		template = good_merchant_template
+		location = root.location
+		culture = root.location.county.culture
+		faith = root.faith
+		dynasty = none
+		save_scope_as = good_merchant_scope
+	}
+}
+	after = {
+	scope:good_merchant_scope = {
+		if = {
+			limit = {
+				root = {
+					is_ai = yes
+				}
+			}
+			silent_disappearance_effect = yes
+		}
+	}
+}
+	option = {
+		name = activity_countryside_family_tour.1001.a
+		{ }
+	}
+	option = {
+		name = activity_countryside_family_tour.1001.b
+		{
+		= ""
+		}
+	}
+	option = {
+		name = activity_countryside_family_tour.1001.c
+	}
+}
