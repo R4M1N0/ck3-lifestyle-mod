@@ -5,11 +5,11 @@ snippet_1773878270595 = {
 	label = "Create Merchant"
 	body = {
 		template = good_merchant_template
-					location = root.location
-					culture = root.location.county.culture
-					faith = root.faith
-					dynasty = none
-					save_scope_as = good_merchant_scope
+									location = root.location
+									culture = root.location.county.culture
+									faith = root.faith
+									dynasty = none
+									save_scope_as = good_merchant_scope
 	}
 }
 
@@ -18,13 +18,13 @@ snippet_1773878311665 = {
 	label = "Remove Good Merchant silently"
 	body = {
 		if = {
-						limit = {
-							root = {
-								is_ai = yes
-							}
-						}
-						silent_disappearance_effect = yes
-					}
+										limit = {
+											root = {
+												is_ai = yes
+											}
+										}
+										silent_disappearance_effect = yes
+									}
 	}
 }
 
@@ -33,25 +33,66 @@ snippet_1773879227017 = {
 	label = "Trigger Host got dumb"
 	body = {
 		limit = {
-				scope:host = {
-					is_incapable = yes
-				}
-			}
-			scope:activity = {
-				activity_type = {
-					save_scope_as = activity_type
-				}
-			}
-			scope:host = {
-				trigger_event = activity_system.0330
-			}
-			every_attending_character = {
-				limit = {
-					NOT = {
-						this = scope:host
+								scope:host = {
+									is_incapable = yes
+								}
+							}
+							scope:activity = {
+								activity_type = {
+									save_scope_as = activity_type
+								}
+							}
+							scope:host = {
+								trigger_event = activity_system.0330
+							}
+							every_attending_character = {
+								limit = {
+									NOT = {
+										this = scope:host
+									}
+								}
+								trigger_event = activity_system.0331
+							}
+	}
+}
+
+snippet_1774965495451 = {
+	key = limit
+	label = "Default Can Activity Start (Diplomacy)"
+	body = {
+		{
+						highest_held_title_tier > tier_barony
+						is_landed = yes
+						trigger_if = {
+							limit = {
+								is_ai = yes
+							}
+							is_at_war = no
+						}
+						is_adult = yes
+						has_focus = diplomacy_majesty_focus
 					}
-				}
-				trigger_event = activity_system.0331
-			}
+	}
+}
+
+snippet_1774968397235 = {
+	key = add
+	label = "Activity Cost Tier Scaler"
+	body = {
+		value = 35
+			multiply = activity_cost_scale_by_tier
+			subtract = 35
+			desc = activity_cost_scale_by_tier_desc
+	}
+}
+
+snippet_1774968404691 = {
+	key = add
+	label = "Activity Cost Era Scaler"
+	body = {
+		value = 35
+			multiply = activity_cost_scale_by_era
+			subtract = 35
+			desc = activity_cost_scale_by_era_desc
 	}
 }
